@@ -1,5 +1,5 @@
 [package]
-name = "simple_matrix"
+name = "rust_matrix"
 version = "0.1.0"
 edition = "2021"
 
