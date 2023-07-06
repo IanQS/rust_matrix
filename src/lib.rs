@@ -1,7 +1,7 @@
-pub(crate) mod matrix;
-pub(crate) mod raw_broadcasting;
-pub(crate) mod matrix_ops;
-pub(crate) mod math_ops;
+pub mod matrix;
+pub mod raw_broadcasting;
+pub mod matrix_ops;
+pub mod math_ops;
 
 #[cfg(test)]
 mod tests {

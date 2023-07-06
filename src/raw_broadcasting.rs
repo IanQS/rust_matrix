@@ -4,10 +4,6 @@
 //      the base of your code to implement broadcasting.
 //////////////////////////////
 
-
-use rayon::prelude::*;
-
-
 #[derive(Copy, Clone)]
 pub enum Op {
     Sub,
@@ -29,13 +25,12 @@ pub(crate) mod broadcasting_ops {
 
     // Scalar-X
     pub fn _scalar_scalar(lhs: f64, rhs: f64, op: Op) -> f64 {
-        let res = match op {
+        match op {
             Op::Add => lhs + rhs,
             Op::Sub => lhs - rhs,
             Op::Mul => lhs * rhs,
             Op::Div => lhs / rhs
-        };
-        res
+        }
     }
 
     pub fn _vector_vector(lhs: &Vec<f64>, rhs: &Vec<f64>, op: Op) -> Vec<f64> {

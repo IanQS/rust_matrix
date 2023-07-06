@@ -260,9 +260,6 @@ fn _matrix_dot(lhs: &Matrix, rhs: &Matrix) -> Matrix {
 }
 
 pub(crate) fn _dot(this: &Matrix, other: &Matrix) -> Matrix {
-    if this.shape.1 != other.shape.0 {
-        println!("Fuk")
-    }
     assert_eq!(this.shape.1, other.shape.0, "Attempting to take dot-product of incompatibly shaped matrices");
     match (this.data.clone(), other.data.clone()) {
         (ScalarT(_), _) => {
@@ -359,7 +356,7 @@ mod tests {
         let rhs = setup_matrix();
 
         let addition = lhs + rhs;
-        let sum1 = addition.clone().sum_axis(&Axis::First);
+        let sum1 = addition.sum_axis(&Axis::First);
         let sum2 = addition.sum_axis(&Axis::Second);
 
         let expected_sum1 = &vec![0, 0, 0];
@@ -382,7 +379,7 @@ mod tests {
     fn test_add() {
         let a = Matrix::from_seed(3, 4, 1.5);
         let b = Matrix::zeros(3, 4);
-        let c = a.clone() + b.clone();
+        let c = a + b;
 
 
         let expected_eval = &vec![
@@ -403,7 +400,7 @@ mod tests {
     #[test]
     fn test_mult() {
         let a = Matrix::from_seed(3, 4, 2);
-        let c = a.clone() * a.clone();
+        let c = a.clone() * a;
 
         let expected_eval = &vec![
             vec![4.0, 4.0, 4.0, 4.0],
@@ -422,7 +419,7 @@ mod tests {
     #[test]
     fn test_div() {
         let a = Matrix::from_seed(3, 4, 1.5);
-        let c = a.clone() / a.clone();
+        let c = a.clone() / a;
 
         let expected_eval = &vec![
             vec![1.0, 1.0, 1.0, 1.0],
@@ -443,7 +440,7 @@ mod tests {
         let a = Matrix::from_seed(3, 4, 1.5);
         let b = Matrix::ones(3, 4);
         let d = a.clone();
-        let c = a.clone() - b.clone();
+        let c = a - b;
 
         let expected_eval = &vec![
             vec![0.5,0.5,0.5,0.5 ],

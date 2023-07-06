@@ -61,8 +61,9 @@ impl Matrix {
         }
     }
 
+    #[must_use]
     pub fn from_vector<T>(v: &Vec<T>, is_row_vec: bool) -> Self
-        where T: Into<f64>, T: Default, T: Copy
+        where T: Into<f64> + Copy + Default
     {
         let mut container = vec![0.0; v.len()];
         for (i, &el) in v.iter().enumerate() {
@@ -82,8 +83,9 @@ impl Matrix {
         }
     }
 
+    #[must_use]
     pub fn from_mat<T>(m: &Vec<Vec<T>>) -> Self
-        where T: Into<f64>, T:Default, T:Copy
+        where T: Into<f64> + Copy + Default
     {
         let s1 = m.len();
         let s2 = m[0].len();
@@ -103,8 +105,10 @@ impl Matrix {
         }
     }
 
+    #[must_use]
     pub fn from_seed<T>(rows: usize, cols: usize, fill: T) -> Self
-        where T: Into<f64>, T: Default, T:Copy {
+        where T: Into<f64> + Default + Copy
+    {
         if rows == 1 && cols == 1 {
             Self::from_scalar(fill)
         } else if rows > 1 && cols == 1 { // col-vec
@@ -121,10 +125,12 @@ impl Matrix {
     }
 
 
+    #[must_use]
     pub fn zeros(rows: usize, cols: usize) -> Self {
         Self::from_seed(rows, cols, 0.0)
     }
 
+    #[must_use]
     pub fn ones(rows: usize, cols: usize) -> Self {
         Self::from_seed(rows, cols, 1.0)
     }
@@ -146,7 +152,7 @@ impl Matrix {
     }
 
     pub(crate) fn transpose_raw_matrix<T>(incoming_mat: &[Vec<T>], curr_num_cols: usize, curr_num_rows: usize) -> Vec<Vec<f64>>
-    where T: Into<f64>, T: Default, T: Copy
+        where T: Into<f64> + Copy + Default
     {
         let mut mat = Vec::new();
         for col_i in 0..curr_num_cols {
@@ -159,21 +165,25 @@ impl Matrix {
         mat
     }
 
+    #[must_use]
     pub fn T(&self) -> Self{
         let mut to_ret = self.clone();
         to_ret._T();
         to_ret
     }
 
-    pub fn dot(&self, other: &Matrix) -> Matrix{
-        matrix_ops::_dot(self, &other)
+    #[must_use]
+    pub fn dot(&self, other: &Self) -> Self{
+        matrix_ops::_dot(self, other)
     }
 
-    pub fn sum(&self) -> Matrix{
+    #[must_use]
+    pub fn sum(&self) -> Self{
         matrix_ops::_sum(self)
     }
 
-    pub fn sum_axis(&self, axis: &Axis) -> Matrix{
+    #[must_use]
+    pub fn sum_axis(&self, axis: &Axis) -> Self{
         matrix_ops::_sum_axis(self, axis)
     }
 
@@ -191,6 +201,7 @@ impl Matrix {
     1) We check the trailing first.
     **/
 
+    #[must_use]
     pub const fn is_broadcastable(lhs: &Self, rhs: &Self) -> bool {
         let is_eq_shape0 = lhs.shape.0 == rhs.shape.0;
         let is_eq_shape1 = lhs.shape.1 == rhs.shape.1;
@@ -200,6 +211,7 @@ impl Matrix {
         (is_eq_shape1 || is_broadcastable1) && (is_eq_shape0 || is_broadcastable0)
     }
 
+    #[must_use]
     pub fn almost_equal(lhs: &Self, rhs: &Self, abs_tol: Option<f64>) -> bool {
         // We do NOT do broadcast equality checks.... that would be madness
         if lhs.shape != rhs.shape {
